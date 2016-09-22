@@ -11783,7 +11783,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong>  Specifically in the project description, we are asked to estimate the probability that a student will fail.  This is a continuous quantity, thus this would be a regression learning problem.  Conceivably one could define a binary classification learning problem where 1 means a student needs early intervention, and 0 means otherwise.</p>
+<p><strong>Answer: </strong>  This is a classification learning problem.  Specifically, we need to distinguish between two labels, corresponding with whether or not a student graduates.</p>
 
 </div>
 </div>
@@ -11800,7 +11800,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Import libraries</span>
@@ -11852,7 +11852,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Calculate number of students</span>
@@ -11915,7 +11915,7 @@ Graduation rate of the class: 67.09%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Extract feature columns</span>
@@ -11997,7 +11997,7 @@ Feature values:
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">preprocess_features</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
@@ -12068,7 +12068,7 @@ Feature values:
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import any additional functionality you may need here</span>
@@ -12081,8 +12081,10 @@ Feature values:
 <span class="n">num_test</span> <span class="o">=</span> <span class="n">X_all</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">num_train</span>
 
 <span class="c1"># TODO: Shuffle and split the dataset into the number of training and testing points above</span>
+<span class="c1"># Added stratify parameter per reviewer suggestion</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> \
-    <span class="n">tts</span><span class="p">(</span><span class="n">X_all</span><span class="p">,</span> <span class="n">y_all</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="n">num_train</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">num_test</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">tts</span><span class="p">(</span><span class="n">X_all</span><span class="p">,</span> <span class="n">y_all</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="n">num_train</span><span class="p">,</span> \
+    <span class="n">test_size</span><span class="o">=</span><span class="n">num_test</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y_all</span><span class="p">)</span>
 
 <span class="c1"># Show the results of the split</span>
 <span class="k">print</span> <span class="s2">&quot;Training set has {} samples.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -12152,16 +12154,20 @@ Testing set has 95 samples.
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
 <p><strong>k Nearest Neighbours (k-NN)</strong><br>
--Strengths:  Training for k-NN is essentially free.  Also, it is easy to update a k-NN classifier to new data.
--Weaknesses:  Making predictions with k-NN is computationally expensive, because we have to find the nearest neighbours.
-I believe that k-NN makes a good candidate for the problem because, intuitively, I would assume that if student S had a feature set that was similar to a large proportion of students who didn't graduate, then S would be likely not graduate either.</p>
+-Strengths:  Training for k-NN is essentially free.  Also, it is easy to update a k-NN classifier to new data.<br>
+-Weaknesses:  Making predictions with k-NN is computationally expensive, because we have to find the nearest neighbours.<br>
+Edit: In reality, k-NN training may construct a geometric data structure such as a k-D tree, in order to expedite k-NN.  For a set of random points, e.g., for points selected from a Gaussian distribution, the cost of finding 1-nearest neighbour becomes O(log m), where m = # of points.</p>
+<p>I believe that k-NN makes a good candidate for the problem because, intuitively, I would assume that if student S had a feature set that was similar to a large proportion of students who didn't graduate, then S would be likely not graduate either.</p>
 <p><strong>Gaussian Naive Bayes</strong><br>
 -Strengths: Naive Bayes classifiers train and predict very quickly.
--Weaknesses:  NB assumes that features are independent.  This may be a gross oversimplification of reality.
--I want to try Gaussian Naive Bayes because it was used for a similar classification problem (see below), also I want to see how a perhaps simple model performs.</p>
+-Weaknesses:  NB assumes that features are conditionally independent.  In this case, this means that for any two features of a student (call them feature A and feature B), the conditional probability distribution of feature A given the student's label y, is not affected by B.
+I.e., for any a,b, P(A=a | student graduates (or not)) = P(A=a | student graduates (or not) and B=b).
+This may be a gross oversimplification of reality.</p>
+<p>I want to try Gaussian Naive Bayes because it was used for a similar classification problem (see below), also I want to see how a perhaps simple model performs.</p>
 <p><strong>SVMs</strong><br>
--Strenghts: SVMs work well when classes are clearly separated.
+-Strenghts: SVMs work well when classes are clearly separated.<br>
 -Weaknesses: SVMs don't perform well when classes are not well separated.  SVMs don't perform well on large data sets because it is computationally intensive.  SVMs are also prone to overfitting.</p>
+<p>I want to try SVMs because I believe there is a strong possibility that a reasonably clearly-defined boundary will separate the graduating students from the non-graduating students.</p>
 <p><strong>Real world applications:</strong><br>
 <em>I admittedly mostly skimmed through the abstracts.</em></p>
 <p>-Both 3-NN and Gaussian NB were used to predict student drop out rates for an online university.<br>
@@ -12195,7 +12201,7 @@ I believe that k-NN makes a good candidate for the problem because, intuitively,
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">train_classifier</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">):</span>
@@ -12268,18 +12274,32 @@ I believe that k-NN makes a good candidate for the problem because, intuitively,
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import the three supervised learning models from sklearn</span>
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">MultinomialNB</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 
 <span class="c1"># TODO: Initialize the three models</span>
+<span class="c1">#Changed Gaussian to MultinomialNB because it is more suitable</span>
+<span class="c1">#for non-numerical features</span>
 <span class="n">clf_A</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">()</span>
-<span class="n">clf_B</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">clf_B</span> <span class="o">=</span> <span class="n">MultinomialNB</span><span class="p">()</span>
 <span class="n">clf_C</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
+
+<span class="c1"># Per reviewer suggestion.</span>
+<span class="c1"># Trying Mahalanobis metric based on notion of distance from distribution.</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">X_trn</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_tst</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X_trn</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">clf_A2</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;mahalanobis&#39;</span><span class="p">,</span> <span class="n">metric_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;V&#39;</span><span class="p">:</span><span class="n">C</span><span class="p">})</span>
+<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_A2</span><span class="p">,</span> <span class="n">X_trn</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_tst</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">72</span>
+<span class="k">print</span> <span class="s2">&quot;&quot;</span>
 
 <span class="c1"># TODO: Set up the training set sizes</span>
 <span class="n">X_train_100</span><span class="p">,</span><span class="n">y_train_100</span> <span class="o">=</span> <span class="p">(</span><span class="n">tts</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">train_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
@@ -12299,6 +12319,7 @@ I believe that k-NN makes a good candidate for the problem because, intuitively,
         <span class="k">print</span> <span class="s2">&quot;&quot;</span>
     <span class="k">print</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">72</span>
     <span class="k">print</span> <span class="s2">&quot;&quot;</span>
+    
 </pre></div>
 
 </div>
@@ -12311,72 +12332,80 @@ I believe that k-NN makes a good candidate for the problem because, intuitively,
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Training a KNeighborsClassifier using a training set size of 100. . .
-Trained model in 0.0016 seconds
-Made predictions in 0.0029 seconds.
-F1 score for training set: 0.8718.
-Made predictions in 0.0027 seconds.
-F1 score for test set: 0.7606.
+<pre>Training a KNeighborsClassifier using a training set size of 300. . .
+Trained model in 0.0034 seconds
+Made predictions in 0.1217 seconds.
+F1 score for training set: 0.8106.
+Made predictions in 0.0369 seconds.
+F1 score for test set: 0.8077.
+========================================================================
+
+Training a KNeighborsClassifier using a training set size of 100. . .
+Trained model in 0.0007 seconds
+Made predictions in 0.0014 seconds.
+F1 score for training set: 0.8333.
+Made predictions in 0.0014 seconds.
+F1 score for test set: 0.7801.
 
 Training a KNeighborsClassifier using a training set size of 200. . .
-Trained model in 0.0015 seconds
-Made predictions in 0.0059 seconds.
-F1 score for training set: 0.8581.
-Made predictions in 0.0054 seconds.
-F1 score for test set: 0.7568.
+Trained model in 0.0007 seconds
+Made predictions in 0.0035 seconds.
+F1 score for training set: 0.7932.
+Made predictions in 0.0019 seconds.
+F1 score for test set: 0.7500.
 
 Training a KNeighborsClassifier using a training set size of 300. . .
-Trained model in 0.0023 seconds
-Made predictions in 0.0161 seconds.
-F1 score for training set: 0.8447.
-Made predictions in 0.0044 seconds.
-F1 score for test set: 0.8082.
+Trained model in 0.0011 seconds
+Made predictions in 0.0071 seconds.
+F1 score for training set: 0.8694.
+Made predictions in 0.0026 seconds.
+F1 score for test set: 0.7785.
 
 ========================================================================
 
-Training a GaussianNB using a training set size of 100. . .
-Trained model in 0.0010 seconds
-Made predictions in 0.0003 seconds.
-F1 score for training set: 0.5102.
+Training a MultinomialNB using a training set size of 100. . .
+Trained model in 0.0108 seconds
 Made predictions in 0.0005 seconds.
-F1 score for test set: 0.3958.
+F1 score for training set: 0.7746.
+Made predictions in 0.0003 seconds.
+F1 score for test set: 0.8000.
 
-Training a GaussianNB using a training set size of 200. . .
-Trained model in 0.0009 seconds
+Training a MultinomialNB using a training set size of 200. . .
+Trained model in 0.0025 seconds
+Made predictions in 0.0003 seconds.
+F1 score for training set: 0.7439.
+Made predictions in 0.0002 seconds.
+F1 score for test set: 0.7231.
+
+Training a MultinomialNB using a training set size of 300. . .
+Trained model in 0.0015 seconds
 Made predictions in 0.0004 seconds.
-F1 score for training set: 0.7536.
+F1 score for training set: 0.7849.
 Made predictions in 0.0003 seconds.
-F1 score for test set: 0.6308.
-
-Training a GaussianNB using a training set size of 300. . .
-Trained model in 0.0009 seconds
-Made predictions in 0.0005 seconds.
-F1 score for training set: 0.8107.
-Made predictions in 0.0003 seconds.
-F1 score for test set: 0.7244.
+F1 score for test set: 0.7972.
 
 ========================================================================
 
 Training a SVC using a training set size of 100. . .
-Trained model in 0.0013 seconds
-Made predictions in 0.0009 seconds.
-F1 score for training set: 0.8421.
-Made predictions in 0.0008 seconds.
-F1 score for test set: 0.8125.
+Trained model in 0.0022 seconds
+Made predictions in 0.0012 seconds.
+F1 score for training set: 0.8163.
+Made predictions in 0.0010 seconds.
+F1 score for test set: 0.7919.
 
 Training a SVC using a training set size of 200. . .
-Trained model in 0.0037 seconds
-Made predictions in 0.0041 seconds.
-F1 score for training set: 0.8354.
-Made predictions in 0.0015 seconds.
-F1 score for test set: 0.8125.
+Trained model in 0.0055 seconds
+Made predictions in 0.0050 seconds.
+F1 score for training set: 0.8148.
+Made predictions in 0.0026 seconds.
+F1 score for test set: 0.8025.
 
 Training a SVC using a training set size of 300. . .
-Trained model in 0.0068 seconds
-Made predictions in 0.0051 seconds.
-F1 score for training set: 0.8761.
-Made predictions in 0.0018 seconds.
-F1 score for test set: 0.8000.
+Trained model in 0.0106 seconds
+Made predictions in 0.0076 seconds.
+F1 score for training set: 0.8658.
+Made predictions in 0.0019 seconds.
+F1 score for test set: 0.7973.
 
 ========================================================================
 
@@ -12403,7 +12432,7 @@ F1 score for test set: 0.8000.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Note:</strong> <em>These tabulated numbers may not precisely match the numbers above because they were re-run on randomly selected training sets.</em></p>
+<p><strong>Note:</strong> <em>These tabulated numbers may not precisely match the numbers above because they were re-run on randomly selected training sets.  The data for classifier2 was for a GaussianNB.  I tried the MultinomialNB classifier after the first review and it performed much better.</em></p>
 <p><strong> Classifer 1 - K nearest neighbours</strong></p>
 <table>
 <thead><tr>
